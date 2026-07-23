@@ -9,6 +9,8 @@ The plan:
 Features to be added:
 - Create a way for charts to be displayed outside of the terminal
     - Charts to be downloadable to pdf
+    - Colors to be picked and updated dynamically so you can see what your pattern will look like with your project colors
 - Uploading patterns as text
     - uploading patterns as pdfs
 - Converting charts into written pattern
+
