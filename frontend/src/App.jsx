@@ -4,6 +4,39 @@ import './App.css';
 
 function App() {
   const [patternInput, setPatternInput] = useState('');
+  const [response, setResponse] = useState(null);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+
+
+  const handleGenerate = async () => {
+    setLoading(true);
+    setError('');
+    setResponse(null);
+
+    try {
+      const result = await fetch('http://localhost:8000/api/pattern', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          instructions: patternInput,
+        }),
+      });
+
+      if (!result.ok) {
+        throw new Error('Failed to send pattern.');
+      }
+
+      const data = await result.json();
+      setResponse(data);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="app">
@@ -33,18 +66,30 @@ function App() {
             <button
               type="button"
               className="generate-button"
-              disabled={!patternInput.trim()}
+              onClick={handleGenerate}
+              disabled={!patternInput.trim() || loading}
             >
-              Generate Chart
+              {loading ? 'Generating...' : 'Generate Chart'}
             </button>
           </section>
 
           <section className="workspace-panel preview-panel">
             <h2>Chart Preview</h2>
 
+            
             <div className="chart-placeholder">
-              <p>Your generated chart will appear here.</p>
+              {error && <p role="alert">{error}</p>}
+
+              {response ? (
+                <div>
+                  <p>Pattern received successfully!</p>
+                  <pre>{response.instructions}</pre>
+                </div>
+              ) : (
+                !error && <p>Your generated chart will appear here.</p>
+              )}
             </div>
+
           </section>
         </div>
       </main>
