@@ -68,7 +68,7 @@ def knit_match(curr_stitch_var):
     """Process knit stitch information (color, num stitches, update stack, truncate knit_patt)"""
     global knit_patt
     global symbol_chart_stack
-    if knit_num := re.search(r"\d", curr_stitch_var.group()):
+    if knit_num := re.search(r"\d+", curr_stitch_var.group()):
         curr_knit_num = int(knit_num.group())
         for i in range(curr_knit_num):
             symbol_chart_stack.append(currcolor)
