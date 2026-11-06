@@ -31,7 +31,7 @@ def row_match(curr_row_var):
     """Processes row information (number, truncates knit patt)"""
     global knit_patt
     global symbol_chart_stack
-if curr_row_num := re.search(r"\d+", curr_row_var.group()):
+    if curr_row_num := re.search(r"\d+", curr_row_var.group()):
         row_num = int(curr_row_num.group())
         knit_patt = knit_patt[curr_row_var.end():]
     else:
