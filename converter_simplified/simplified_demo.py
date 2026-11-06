@@ -83,7 +83,7 @@ def slip_match(curr_stitch_var):
     """Process slip stitch information (color, num stitches, update stack, truncate knit_patt)"""
     global knit_patt
     global symbol_chart_stack
-    if slip_num := re.search(r"\d", curr_stitch_var.group()):
+if slip_num := re.search(r"\d+", curr_stitch_var.group()):
         curr_slip_num = int(slip_num.group())
         for i in range(curr_slip_num):
             symbol_chart_stack.append(currcolor2)
