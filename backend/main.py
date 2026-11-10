@@ -3,6 +3,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
+from input_validation import input_validation
+
 app = FastAPI()
 
 # Allow the React frontend to communicate with FastAPI
@@ -26,6 +28,14 @@ def health():
 
 @app.post("/api/pattern")
 def process_pattern(pattern: PatternRequest):
+    input_validator = input_validation(pattern.instructions)
+    try:
+        pattern.instructions = input_validator.validate()
+    except ValueError as e:
+        return {
+            "success": False,
+            "instructions": str(e)
+        }
     return {
         "success": True,
         "instructions": pattern.instructions
