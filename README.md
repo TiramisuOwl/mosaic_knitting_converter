@@ -70,7 +70,7 @@ Install dependencies and start the server:
 
 ```bash
 python -m pip install -r requirements.txt
-fastapi dev main.py
+python -m uvicorn main:app --reload
 ```
 
 Verify that the backend is running at http://localhost:8000/api/health.

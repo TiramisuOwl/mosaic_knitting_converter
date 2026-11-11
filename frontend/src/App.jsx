@@ -31,6 +31,7 @@ function App() {
 
       const data = await result.json();
       setResponse(data);
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -80,7 +81,7 @@ function App() {
             <div className="chart-placeholder">
               {error && <p role="alert">{error}</p>}
 
-              {response ? (
+              {response && response.success ? (
                 <div>
                   <p>Pattern received successfully!</p>
 
@@ -106,6 +107,11 @@ function App() {
                     <summary>Original pattern instructions</summary>
                     <pre>{response.instructions}</pre>
                   </details>
+                </div>
+              ) : response && !response.success ? (
+                <div>
+                  <p>Failed to generate chart!</p>
+                  <pre>{response.instructions}</pre>
                 </div>
               ) : (
                 !error && <p>Your generated chart will appear here.</p>
