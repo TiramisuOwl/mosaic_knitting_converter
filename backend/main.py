@@ -1,5 +1,6 @@
 
 from fastapi import FastAPI
+from simplified_demo import parse_pattern
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -26,7 +27,11 @@ def health():
 
 @app.post("/api/pattern")
 def process_pattern(pattern: PatternRequest):
+    parsed_result = parse_pattern(pattern.instructions)
+
     return {
         "success": True,
-        "instructions": pattern.instructions
+        "instructions": pattern.instructions,
+        "parsed_array": parsed_result["parsed_array"],
+        "chart_string": parsed_result["chart_string"]
     }
