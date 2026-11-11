@@ -84,7 +84,29 @@ function App() {
               {response && response.success ? (
                 <div>
                   <p>Pattern received successfully!</p>
-                  <pre>{response.instructions}</pre>
+
+                  {Array.isArray(response.parsed_array) ? (
+                    <div>
+                      <p>Received {response.parsed_array.length} parsed items from the backend.</p>
+
+                      <details>
+                        <summary>Parser output array</summary>
+                        <pre>{JSON.stringify(response.parsed_array, null, 2)}</pre>
+                      </details>
+
+                      <details>
+                        <summary>Formatted chart output</summary>
+                        <pre>{response.chart_string}</pre>
+                      </details>
+                    </div>
+                  ) : (
+                    <p>Parsed chart data is not available.</p>
+                  )}
+
+                  <details>
+                    <summary>Original pattern instructions</summary>
+                    <pre>{response.instructions}</pre>
+                  </details>
                 </div>
               ) : response && !response.success ? (
                 <div>
