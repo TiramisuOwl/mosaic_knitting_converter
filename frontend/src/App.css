@@ -177,3 +177,29 @@
   background-color: #f5f5f5;
   color: #222;
 }
+/* Visual knitting chart */
+
+.pattern-chart {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  overflow-x: auto;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+}
+
+.row-number {
+  width: 30px;
+  flex-shrink: 0;
+  font-weight: 600;
+}
+
+.chart-cell {
+  width: 35px;
+  height: 35px;
+  flex-shrink: 0;
+  border: 1px solid #777;
+  box-sizing: border-box;
+}
