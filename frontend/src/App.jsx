@@ -24,7 +24,7 @@ function formatChartData(parsedArray) {
 }
 
 // Display the parsed pattern as a visual knitting chart
-function PatternChart({ parsedArray }) {
+function PatternChart({ parsedArray, colorA, colorB }) {
   const rows = formatChartData(parsedArray);
 
   return (
@@ -38,7 +38,7 @@ function PatternChart({ parsedArray }) {
               key={index}
               className="chart-cell"
               style={{
-                backgroundColor: stitch === '#' ? '#4A7C59' : '#FFFFFF',
+                backgroundColor: stitch === '#' ? colorA : colorB,
               }}
             />
           ))}
@@ -53,6 +53,9 @@ function App() {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  // Custom colors for the knitting chart
+  const [colorA, setColorA] = useState('#4A7C59');
+  const [colorB, setColorB] = useState('#FFFFFF');
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -107,7 +110,6 @@ function App() {
                 rows={12}
               />
             </div>
-
             <button
               type="button"
               className="generate-button"
@@ -125,7 +127,11 @@ function App() {
               {error ? (
                 <p role="alert">{error}</p>
               ) : response?.success && Array.isArray(response.parsed_array) ? (
-                <PatternChart parsedArray={response.parsed_array} />
+                <PatternChart
+                  parsedArray={response.parsed_array}
+                  colorA={colorA}
+                  colorB={colorB}
+                />
               ) : response && !response.success ? (
                 <p role="alert">{response.instructions}</p>
               ) : response?.success ? (
@@ -135,6 +141,27 @@ function App() {
               ) : (
                 <p>Your generated chart will appear here.</p>
               )}
+            </div>
+            <div className="pattern-colors">
+              <h3>Pattern Colors</h3>
+
+              <div className="color-picker-group">
+                <label htmlFor="color-a">Color A</label>
+                <input
+                  id="color-a"
+                  type="color"
+                  value={colorA}
+                  onChange={(event) => setColorA(event.target.value)}
+                />
+
+                <label htmlFor="color-b">Color B</label>
+                <input
+                  id="color-b"
+                  type="color"
+                  value={colorB}
+                  onChange={(event) => setColorB(event.target.value)}
+                />
+              </div>
             </div>
           </section>
         </div>
