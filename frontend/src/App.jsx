@@ -2,6 +2,51 @@
 import { useState } from 'react';
 import './App.css';
 
+// Convert the parser output into rows of stitches
+function formatChartData(parsedArray) {
+  const rows = [];
+  let stitches = [];
+
+  for (const item of parsedArray) {
+    if (item === "#" || item === " ") {
+      // Save stitch colors
+      stitches.push(item);
+    } else if (typeof item === "number") {
+      // A row number marks the end of a row
+      rows.push({
+        rowNumber: item,
+        stitches: stitches.reverse()
+      });
+
+      stitches = [];
+    }
+  }
+
+  return rows;
+}
+function PatternChart({ parsedArray }) {
+  const rows = formatChartData(parsedArray);
+
+  return (
+    <div className="pattern-chart">
+      {rows.map((row) => (
+        <div key={row.rowNumber} className="chart-row">
+          <span className="row-number">{row.rowNumber}</span>
+
+          {row.stitches.map((stitch, index) => (
+            <div
+              key={index}
+              className="chart-cell"
+              style={{
+                backgroundColor: stitch === "#" ? "#4A7C59" : "#FFFFFF",
+              }}
+            />
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
 function App() {
   const [patternInput, setPatternInput] = useState('');
   const [response, setResponse] = useState(null);
@@ -31,6 +76,9 @@ function App() {
 
       const data = await result.json();
       setResponse(data);
+      if (data.success && Array.isArray(data.parsed_array)) {
+  console.log("Formatted chart data:", formatChartData(data.parsed_array));
+}
 
     } catch (err) {
       setError(err.message);
@@ -84,7 +132,7 @@ function App() {
               {response && response.success ? (
                 <div>
                   <p>Pattern received successfully!</p>
-
+                  <PatternChart parsedArray={response.parsed_array} />
                   {Array.isArray(response.parsed_array) ? (
                     <div>
                       <p>Received {response.parsed_array.length} parsed items from the backend.</p>
