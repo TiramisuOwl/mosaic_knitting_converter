@@ -8,14 +8,12 @@ function formatChartData(parsedArray) {
   let stitches = [];
 
   for (const item of parsedArray) {
-    if (item === "#" || item === " ") {
-      // Save stitch colors
+    if (item === '#' || item === ' ') {
       stitches.push(item);
-    } else if (typeof item === "number") {
-      // A row number marks the end of a row
+    } else if (typeof item === 'number') {
       rows.push({
         rowNumber: item,
-        stitches: stitches.reverse()
+        stitches: stitches.reverse(),
       });
 
       stitches = [];
@@ -24,6 +22,8 @@ function formatChartData(parsedArray) {
 
   return rows;
 }
+
+// Display the parsed pattern as a visual knitting chart
 function PatternChart({ parsedArray }) {
   const rows = formatChartData(parsedArray);
 
@@ -38,7 +38,7 @@ function PatternChart({ parsedArray }) {
               key={index}
               className="chart-cell"
               style={{
-                backgroundColor: stitch === "#" ? "#4A7C59" : "#FFFFFF",
+                backgroundColor: stitch === '#' ? '#4A7C59' : '#FFFFFF',
               }}
             />
           ))}
@@ -47,12 +47,12 @@ function PatternChart({ parsedArray }) {
     </div>
   );
 }
+
 function App() {
   const [patternInput, setPatternInput] = useState('');
   const [response, setResponse] = useState(null);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -76,10 +76,6 @@ function App() {
 
       const data = await result.json();
       setResponse(data);
-      if (data.success && Array.isArray(data.parsed_array)) {
-  console.log("Formatted chart data:", formatChartData(data.parsed_array));
-}
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -125,47 +121,21 @@ function App() {
           <section className="workspace-panel preview-panel">
             <h2>Chart Preview</h2>
 
-            
             <div className="chart-placeholder">
-              {error && <p role="alert">{error}</p>}
-
-              {response && response.success ? (
-                <div>
-                  <p>Pattern received successfully!</p>
-                  <PatternChart parsedArray={response.parsed_array} />
-                  {Array.isArray(response.parsed_array) ? (
-                    <div>
-                      <p>Received {response.parsed_array.length} parsed items from the backend.</p>
-
-                      <details>
-                        <summary>Parser output array</summary>
-                        <pre>{JSON.stringify(response.parsed_array, null, 2)}</pre>
-                      </details>
-
-                      <details>
-                        <summary>Formatted chart output</summary>
-                        <pre>{response.chart_string}</pre>
-                      </details>
-                    </div>
-                  ) : (
-                    <p>Parsed chart data is not available.</p>
-                  )}
-
-                  <details>
-                    <summary>Original pattern instructions</summary>
-                    <pre>{response.instructions}</pre>
-                  </details>
-                </div>
+              {error ? (
+                <p role="alert">{error}</p>
+              ) : response?.success && Array.isArray(response.parsed_array) ? (
+                <PatternChart parsedArray={response.parsed_array} />
               ) : response && !response.success ? (
-                <div>
-                  <p>Failed to generate chart!</p>
-                  <pre>{response.instructions}</pre>
-                </div>
+                <p role="alert">{response.instructions}</p>
+              ) : response?.success ? (
+                <p>Chart data is not available.</p>
+              ) : loading ? (
+                <p>Generating chart...</p>
               ) : (
-                !error && <p>Your generated chart will appear here.</p>
+                <p>Your generated chart will appear here.</p>
               )}
             </div>
-
           </section>
         </div>
       </main>
