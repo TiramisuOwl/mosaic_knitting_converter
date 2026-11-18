@@ -6,11 +6,12 @@ Developed for CS 498 Senior Design at the University of Kentucky.
 
 ## Project Overview
 
-The Mosaic Knitting Converter allows users to enter row-by-row knitting instructions and generate a visual pattern chart. Planned features include pattern validation, interactive charts, customizable colors, row tracking, pattern repeats, and PDF downloads.
+The Mosaic Knitting Converter allows users to enter row-by-row knitting instructions and generate a visual pattern chart. Features include pattern validation, interactive charts, customizable colors, row tracking, pattern repeats, and PDF downloads.
 
 **Tech Stack**
 - **Frontend:** React, JavaScript, Vite, CSS
 - **Backend:** Python, FastAPI
+- **Testing:** Vitest, React Testing Library, Cypress
 - **Version Control:** Git and GitHub
 
 ## Getting Started
@@ -37,6 +38,8 @@ cd mosaic_knitting_converter
 
 ### 2. Start the Frontend
 
+From the `frontend/` directory:
+
 ```bash
 cd frontend
 npm install
@@ -47,7 +50,7 @@ Open the URL shown in the terminal (typically http://localhost:5173).
 
 ### 3. Start the Backend
 
-Open a **second terminal**, navigate to the repository's `backend` directory, and create a Python virtual environment:
+Open a **second terminal**, navigate to the repository's `backend/` directory, and create a Python virtual environment:
 
 ```bash
 cd backend
@@ -77,7 +80,7 @@ Verify that the backend is running at http://localhost:8000/api/health.
 
 API documentation is available at http://localhost:8000/docs.
 
-**For future sessions:** Open two terminals and run `npm run dev` from `frontend/` and `fastapi dev main.py` from `backend/` (activate the Python environment first). Dependencies only need to be reinstalled when they change.
+**For future sessions:** Open two terminals and run `npm run dev` from `frontend/` and `python -m uvicorn main:app --reload` from `backend/` (activate the Python environment first). Dependencies only need to be reinstalled when they change.
 
 ## Development Workflow
 
@@ -104,6 +107,7 @@ For frontend changes, run from `frontend/`:
 ```bash
 npm run lint
 npm run build
+npm run test:run
 ```
 
 For backend changes, test your endpoints using http://localhost:8000/docs.
@@ -137,6 +141,54 @@ git pull origin main
 
 **Important:** Do not commit `node_modules/`, `.venv/`, or environment files containing secrets. These are excluded through `.gitignore`.
 
+## Testing
+
+### Unit and Component Tests (Vitest)
+
+Vitest and React Testing Library are used to test frontend functions and components.
+
+From the `frontend/` directory:
+
+```bash
+npm install
+npm run test:run
+```
+
+To run tests in watch mode:
+
+```bash
+npm test
+```
+
+These tests do not require the backend to be running.
+
+
+### End-to-End Tests (Cypress)
+
+Cypress is used to test the full application, including communication between the React frontend and FastAPI backend.
+
+Start both the frontend and backend using the instructions in **Getting Started**.
+
+From the repository root (`mosaic_knitting_converter/`), install the testing dependencies:
+
+```bash
+npm install
+```
+
+Run the Cypress tests:
+
+```bash
+npx cypress run
+```
+
+To open the interactive test runner:
+
+```bash
+npx cypress open
+```
+
+**Note:** Cypress commands must be run from the repository root, not `frontend/`. Both servers must be running to execute the system tests.
+
 ## Architecture
 
 The application uses React for the user interface and Python for pattern processing. FastAPI connects them using HTTP requests and JSON responses.
@@ -150,9 +202,6 @@ flowchart TD
     A --> D["Visual Knitting Chart"]
 ```
 
-The parser and chart generation are under development; the current setup provides the initial frontend and backend applications.
-
 ## Contributors
 
 Ruthie Houston, Lily Calvert, Lisa Makinen, Daniel Hasselwander, and Lainey Van Vliet.
-

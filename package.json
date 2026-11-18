@@ -1,0 +1,24 @@
+{
+  "name": "mosaic_knitting_converter",
+  "version": "1.0.0",
+  "description": "A web application that converts written mosaic knitting patterns into interactive visual charts.",
+  "main": "cypress.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TiramisuOwl/mosaic_knitting_converter.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/TiramisuOwl/mosaic_knitting_converter/issues"
+  },
+  "homepage": "https://github.com/TiramisuOwl/mosaic_knitting_converter#readme",
+  "devDependencies": {
+    "cypress": "^16.3.0"
+  }
+}
