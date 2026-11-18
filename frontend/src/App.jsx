@@ -1,27 +1,7 @@
 
 import { useState } from 'react';
 import './App.css';
-
-// Convert the parser output into rows of stitches
-function formatChartData(parsedArray) {
-  const rows = [];
-  let stitches = [];
-
-  for (const item of parsedArray) {
-    if (item === '#' || item === ' ') {
-      stitches.push(item);
-    } else if (typeof item === 'number') {
-      rows.push({
-        rowNumber: item,
-        stitches: stitches.reverse(),
-      });
-
-      stitches = [];
-    }
-  }
-
-  return rows;
-}
+import { formatChartData } from './utils/formatChartData';
 
 // Display the parsed pattern as a visual knitting chart
 function PatternChart({ parsedArray }) {
