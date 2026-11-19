@@ -35,7 +35,7 @@ def process_pattern(pattern: PatternRequest):
     except ValueError as e:
         return {
             "success": False,
-            "error": str(e)
+            "instructions": str(e)
         }
 
     return {
