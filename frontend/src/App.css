@@ -203,3 +203,39 @@
   border: 1px solid #777;
   box-sizing: border-box;
 }
+
+/* Custom pattern colors */
+
+.pattern-colors {
+  margin-top: 24px;
+  padding-top: 16px;
+  border-top: 1px solid #C6B9A6;
+}
+
+.pattern-colors h3 {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  margin-bottom: 16px;
+}
+
+.color-picker-group {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.color-picker-group label {
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.color-picker-group input[type="color"] {
+  width: 44px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid #8E8073;
+  border-radius: 3px;
+  cursor: pointer;
+  background-color: #FFFEFA;
+}
