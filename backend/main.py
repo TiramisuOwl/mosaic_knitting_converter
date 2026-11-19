@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
-from input_validation import input_validation
 
 app = FastAPI()
 
@@ -28,15 +27,19 @@ def health():
 
 @app.post("/api/pattern")
 def process_pattern(pattern: PatternRequest):
-    input_validator = input_validation(pattern.instructions)
+
     try:
-        pattern.instructions = input_validator.validate()
+        parsed_result = parse_pattern(pattern.instructions)
+
     except ValueError as e:
         return {
             "success": False,
-            "instructions": str(e)
+            "error": str(e)
         }
+
     return {
         "success": True,
-        "instructions": pattern.instructions
+        "instructions": pattern.instructions,
+        "parsed_array": parsed_result["parsed_array"],
+        "chart_string": parsed_result["chart_string"]
     }
