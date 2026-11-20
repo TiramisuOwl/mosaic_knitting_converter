@@ -9,10 +9,8 @@ function PatternChart({ parsedArray, colorA, colorB }) {
 
   return (
     <div className="pattern-chart">
-      {rows.map((row) => (
+      {[...rows].reverse().map((row) => (
         <div key={row.rowNumber} className="chart-row">
-          <span className="row-number">{row.rowNumber}</span>
-
           {row.stitches.map((stitch, index) => (
             <div
               key={index}
@@ -22,6 +20,8 @@ function PatternChart({ parsedArray, colorA, colorB }) {
               }}
             />
           ))}
+
+          <span className="row-number">{row.rowNumber}</span>
         </div>
       ))}
     </div>

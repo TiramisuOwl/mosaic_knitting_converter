@@ -1,50 +1,71 @@
-
 import { describe, it, expect } from 'vitest';
 import { formatChartData } from './formatChartData';
 
 describe('formatChartData', () => {
-  it('converts a single row into chart data', () => {
-    const input = ['#', ' ', '#', 1];
+  it('converts a single row into structured square objects', () => {
+    const input = [' | ', ' ', ' | ', '#', ' | ', '#', 1];
 
     const result = formatChartData(input);
 
     expect(result).toEqual([
       {
         rowNumber: 1,
-        stitches: ['#', ' ', '#'],
+        stitches: ['#', '#', ' '],
+        squares: [
+          { row: 1, position: 0, color: 'A', rawSymbol: '#', stitch: 'knit' },
+          { row: 1, position: 1, color: 'A', rawSymbol: '#', stitch: 'knit' },
+          { row: 1, position: 2, color: 'B', rawSymbol: ' ', stitch: 'knit' },
+        ],
       },
     ]);
   });
 
-  it('correctly handles multiple rows', () => {
-    const input = ['#', ' ', 1, ' ', '#', 2];
+  it('correctly handles multiple rows and sorts them in ascending row order', () => {
+    const input = [
+      ' | ', ' ', ' | ', '#', 3,
+      ' | ', '#', ' | ', ' ', 1,
+    ];
 
     const result = formatChartData(input);
 
     expect(result).toHaveLength(2);
     expect(result[0].rowNumber).toBe(1);
-    expect(result[1].rowNumber).toBe(2);
-  });
+    expect(result[1].rowNumber).toBe(3);
 
-  it('reverses stitches into chart display order', () => {
-    const input = ['#', ' ', ' ', 1];
+    expect(result[0].squares).toEqual([
+      { row: 1, position: 0, color: 'B', rawSymbol: ' ', stitch: 'knit' },
+      { row: 1, position: 1, color: 'A', rawSymbol: '#', stitch: 'knit' },
+    ]);
 
-    const result = formatChartData(input);
-
-    expect(result[0].stitches).toEqual([
-      ' ', ' ', '#',
+    expect(result[1].squares).toEqual([
+      { row: 3, position: 0, color: 'A', rawSymbol: '#', stitch: 'knit' },
+      { row: 3, position: 1, color: 'B', rawSymbol: ' ', stitch: 'knit' },
     ]);
   });
 
-  it('handles an empty pattern', () => {
-    expect(formatChartData([])).toEqual([]);
+  it('supports top-down chart row ordering when ascendingRows is false', () => {
+    const input = [
+      ' | ', ' ', ' | ', '#', 3,
+      ' | ', '#', ' | ', ' ', 1,
+    ];
+
+    const result = formatChartData(input, { ascendingRows: false });
+
+    expect(result[0].rowNumber).toBe(3);
+    expect(result[1].rowNumber).toBe(1);
   });
 
-  it('preserves the correct number of stitches', () => {
-    const input = ['#', ' ', '#', '#', 1];
+  it('ignores pipe separators and preserves exact stitch count per row', () => {
+    const input = [' | ', '#', ' | ', ' ', ' | ', '#', ' | ', '#', 1];
 
     const result = formatChartData(input);
 
-    expect(result[0].stitches).toHaveLength(4);
+    expect(result[0].squares).toHaveLength(4);
+    expect(result[0].squares.map((sq) => sq.position)).toEqual([0, 1, 2, 3]);
+  });
+
+  it('handles an empty or invalid pattern input safely', () => {
+    expect(formatChartData([])).toEqual([]);
+    expect(formatChartData(null)).toEqual([]);
   });
 });
